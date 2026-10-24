@@ -1,4 +1,4 @@
-# PX4 Drone Autopilot
+# HKUST-Nxt-Dual-Valid-Telemetry
 
 FC-CLAMP firmware branch: [DShot telemetry repair and validation](validation/fc_clamp_dshot/README.md).
 

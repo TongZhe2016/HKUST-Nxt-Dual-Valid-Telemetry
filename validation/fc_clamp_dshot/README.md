@@ -17,24 +17,24 @@ new sample and do not refresh that motor's published measurement timestamp.
 
 ## Build and check
 
-When this repository is the `onboard/PX4-Autopilot` submodule of
+When this repository is the `onboard/HKUST-Nxt-Dual-Valid-Telemetry` submodule of
 FC-CLAMP_Real_Drone, run from the parent repository:
 
 ```bash
-git submodule update --init onboard/PX4-Autopilot
-git -C onboard/PX4-Autopilot submodule update --init --recursive -- \
+git submodule update --init onboard/HKUST-Nxt-Dual-Valid-Telemetry
+git -C onboard/HKUST-Nxt-Dual-Valid-Telemetry submodule update --init --recursive -- \
   platforms/nuttx/NuttX/nuttx platforms/nuttx/NuttX/apps \
   src/modules/mavlink/mavlink src/drivers/gps/devices \
   src/lib/events/libevents src/lib/heatshrink/heatshrink \
   src/modules/uxrce_dds_client/Micro-XRCE-DDS-Client
 
 mkdir -p log tmp/px4-dshot-host-check
-python3 onboard/PX4-Autopilot/validation/fc_clamp_dshot/check_telemetry.py \
-  --source "$PWD/onboard/PX4-Autopilot" \
+python3 onboard/HKUST-Nxt-Dual-Valid-Telemetry/validation/fc_clamp_dshot/check_telemetry.py \
+  --source "$PWD/onboard/HKUST-Nxt-Dual-Valid-Telemetry" \
   --build-dir "$PWD/tmp/px4-dshot-host-check" \
   > "$PWD/log/px4-dshot-host-check.log" 2>&1
 
-make -C onboard/PX4-Autopilot hkust_nxt-dual_default -j6 \
+make -C onboard/HKUST-Nxt-Dual-Valid-Telemetry hkust_nxt-dual_default -j6 \
   > "$PWD/log/px4-dshot-build.log" 2>&1
 ```
 
