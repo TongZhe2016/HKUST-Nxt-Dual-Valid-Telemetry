@@ -311,8 +311,8 @@ int DShot::handle_new_bdshot_erpm(void)
 	esc_status.esc_connectiontype = esc_status_s::ESC_CONNECTION_TYPE_DSHOT;
 	esc_status.esc_armed_flags = _outputs_on;
 
-	// We wait until all are ready.
-	if (up_bdshot_num_erpm_ready() < _num_motors) {
+	// Publish valid samples without waiting for a channel with failed telemetry.
+	if (up_bdshot_num_erpm_ready() == 0) {
 		return 0;
 	}
 

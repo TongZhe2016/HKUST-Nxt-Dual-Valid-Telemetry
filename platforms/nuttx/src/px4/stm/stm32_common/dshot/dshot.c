@@ -38,6 +38,7 @@
 
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/micro_hal.h>
+#include <nuttx/irq.h>
 #include <stm32_dma.h>
 #include <stm32_tim.h>
 #include <px4_arch/dshot.h>
@@ -552,10 +553,11 @@ void process_capture_results(uint8_t timer_index, uint8_t channel_index)
 
 
 	if (period == 0) {
-		// If the parsing failed, set the eRPM to 0
-		_erpms[output_channel] = 0;
+		// Preserve an unconsumed valid sample without making an invalid frame ready.
+		return;
+	}
 
-	} else if (period == 65408) {
+	if (period == 65408) {
 		// Special case for zero motion (e.g., stationary motor)
 		_erpms[output_channel] = 0;
 
@@ -564,7 +566,7 @@ void process_capture_results(uint8_t timer_index, uint8_t channel_index)
 		_erpms[output_channel] = (1000000 * 60 / 100 + period / 2) / period;
 	}
 
-	// We set it ready anyway, not to hold up other channels when used in round robin.
+	// A valid stopped-motor report is also a new sample.
 	_erpms_ready[output_channel] = true;
 }
 
@@ -643,13 +645,18 @@ int up_bdshot_get_erpm(uint8_t output_channel, int *erpm)
 	uint8_t timer_channel_index = timer_io_channels[output_channel].timer_channel - 1;
 	bool channel_initialized = timer_configs[timer_index].initialized_channels[timer_channel_index];
 
-	if (channel_initialized) {
+	irqstate_t flags = px4_enter_critical_section();
+
+	if (channel_initialized && _erpms_ready[output_channel]) {
 		*erpm = _erpms[output_channel];
 		_erpms_ready[output_channel] = false;
+		px4_leave_critical_section(flags);
 		return PX4_OK;
 	}
 
-	// this channel is not configured for dshot
+	px4_leave_critical_section(flags);
+
+	// No unconsumed valid sample, or this channel is not configured.
 	return PX4_ERROR;
 }
 
@@ -798,14 +805,14 @@ unsigned calculate_period(uint8_t timer_index, uint8_t channel_index)
 
 	// 20bits -> 5 mapped -> 4 nibbles
 	for (unsigned i = 0; i < 4; ++i) {
-		uint32_t nibble = nibbles_from_mapped(gcr & 0x1F) << (4 * i);
+		uint32_t nibble = nibbles_from_mapped(gcr & 0x1F);
 
 		if (nibble == 0xFF) {
 			++read_fail_nibble[channel_index];;
 			return 0;
 		}
 
-		data |= nibble;
+		data |= nibble << (4 * i);
 		gcr >>= 5;
 	}
 
