@@ -51,11 +51,11 @@ namespace InvenSense_IAM20680HP
 static constexpr uint32_t SPI_SPEED = 8 * 1000 * 1000; // 8MHz SPI serial interface
 static constexpr uint8_t DIR_READ = 0x80;
 
-static constexpr uint8_t WHOAMI = 0xF8; //whoami默认值
+static constexpr uint8_t WHOAMI = 0xF8; // Default WHO_AM_I value
 
-static constexpr float TEMPERATURE_SENSITIVITY = 326.8f; // LSB/C 灵敏度
-static constexpr float TEMPERATURE_OFFSET = 25.f; // C 温度偏移
-//寄存器地址
+static constexpr float TEMPERATURE_SENSITIVITY = 326.8f; // LSB/C sensitivity
+static constexpr float TEMPERATURE_OFFSET = 25.f; // Temperature offset in degrees Celsius
+// Register addresses
 enum class Register : uint8_t {
 	SMPLRT_DIV        = 0X19,
 	CONFIG            = 0x1A,

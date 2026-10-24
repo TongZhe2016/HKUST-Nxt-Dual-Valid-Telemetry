@@ -368,8 +368,8 @@ void IAM20680HP::ConfigureGyro()
 		break;
 	}
 
-	_px4_gyro.set_scale(math::radians(range_dps / 32768.f));	//灵敏度为16.4 LSB/dps
-	_px4_gyro.set_range(math::radians(range_dps));	//陀螺仪量程
+	_px4_gyro.set_scale(math::radians(range_dps / 32768.f));	// Sensitivity: 16.4 LSB/dps
+	_px4_gyro.set_range(math::radians(range_dps));	// Gyroscope range
 }
 
 void IAM20680HP::ConfigureSampleRate(int sample_rate)

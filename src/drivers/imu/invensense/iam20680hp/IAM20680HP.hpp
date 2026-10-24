@@ -153,10 +153,10 @@ private:
 	register_config_t _register_cfg[size_register_cfg] {
 		// Register                | Set bits, Clear bits
 		{ Register::CONFIG,         CONFIG_BIT::FIFO_MODE | CONFIG_BIT::DLPF_CFG_BYPASS_DLPF_8KHZ, 0 },
-		{ Register::SMPLRT_DIV,     SMPLRT_DIV_BIT::SPEED, 0 },//输出速率100hz
-		{ Register::GYRO_CONFIG,    GYRO_CONFIG_BIT::FS_SEL_2000_DPS, GYRO_CONFIG_BIT::FCHOICE_B_8KHZ_BYPASS_DLPF },//陀螺仪±2000dps量程
-		{ Register::ACCEL_CONFIG,   ACCEL_CONFIG_BIT::ACCEL_FS_SEL_16G, 0 },//加速度计±16G量程
-		{ Register::ACCEL_CONFIG2,  ACCEL_CONFIG2_BIT::ACCEL_FCHOICE_B, ACCEL_CONFIG2_BIT::FIFO_SIZE },//加速度计低通滤波BW=21.2Hz
+	{ Register::SMPLRT_DIV,     SMPLRT_DIV_BIT::SPEED, 0 },// Output rate: 100 Hz
+	{ Register::GYRO_CONFIG,    GYRO_CONFIG_BIT::FS_SEL_2000_DPS, GYRO_CONFIG_BIT::FCHOICE_B_8KHZ_BYPASS_DLPF },// Gyroscope range: +/-2000 dps
+	{ Register::ACCEL_CONFIG,   ACCEL_CONFIG_BIT::ACCEL_FS_SEL_16G, 0 },// Accelerometer range: +/-16 g
+	{ Register::ACCEL_CONFIG2,  ACCEL_CONFIG2_BIT::ACCEL_FCHOICE_B, ACCEL_CONFIG2_BIT::FIFO_SIZE },// Accelerometer low-pass bandwidth: 21.2 Hz
 		{ Register::FIFO_EN,        FIFO_EN_BIT::XG_FIFO_EN | FIFO_EN_BIT::YG_FIFO_EN | FIFO_EN_BIT::ZG_FIFO_EN | FIFO_EN_BIT::ACCEL_FIFO_EN, FIFO_EN_BIT::TEMP_FIFO_EN },
 		{ Register::INT_PIN_CFG,    INT_PIN_CFG_BIT::INT_LEVEL, 0 },
 		{ Register::INT_ENABLE,     INT_ENABLE_BIT::DATA_RDY_INT_EN, 0 },
